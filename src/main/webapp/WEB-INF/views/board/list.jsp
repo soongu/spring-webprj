@@ -51,6 +51,34 @@
 					</c:forEach>
 				</table>
 
+				<div class='pull-right'>
+                    <ul class="pagination">
+                        <c:if test="${pageMaker.prev}">
+                            <li class="paginate_button previous"><a
+                                href="${pageMaker.startPage -1}">Previous</a></li>
+                        </c:if>
+
+                        <c:forEach var="num" begin="${pageMaker.startPage}"
+                            end="${pageMaker.endPage}">
+                            <li class="paginate_button  ${pageMaker.cri.pageNum == num ? 'active':''} ">
+                                <a href="${num}">${num}</a>
+                            </li>
+                        </c:forEach>
+
+                        <c:if test="${pageMaker.next}">
+                            <li class="paginate_button next"><a
+                                href="${pageMaker.endPage +1 }">Next</a></li>
+                        </c:if>
+                   </ul>
+                </div>
+                <!--  end Pagination -->
+
+                <form id='actionForm' action="/board/list" method='get'>
+                    <input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
+                    <input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
+                </form>
+
+
 				<!-- Modal  추가 -->
                 <div class="modal fade" id="myModal">
                     <div class="modal-dialog">
@@ -109,6 +137,20 @@ $(document).ready(function() {
     document.getElementById('regBtn').addEventListener('click', e => {
         location.href = '/board/register';
     });
+
+    //페이지 버튼 클릭 이벤트
+    const actionForm = document.getElementById("actionForm");
+
+    document.querySelector(".pagination").addEventListener("click", e => {
+        e.preventDefault();
+        console.log('click');
+        const pageInput = actionForm.querySelector("input[name='pageNum']");
+
+        pageInput.value = e.target.getAttribute('href');
+
+        actionForm.submit();
+    });
+
 
 });
 </script>

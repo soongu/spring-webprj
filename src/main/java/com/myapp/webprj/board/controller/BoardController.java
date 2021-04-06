@@ -2,6 +2,8 @@ package com.myapp.webprj.board.controller;
 
 import com.myapp.webprj.board.domain.Board;
 import com.myapp.webprj.board.service.BoardService;
+import com.myapp.webprj.paging.Criteria;
+import com.myapp.webprj.paging.PageDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
@@ -20,9 +22,10 @@ public class BoardController {
     private final BoardService boardService;
 
     @GetMapping("/list")
-    public String list(Model model) {
-        log.info("/board/list");
-        model.addAttribute("list", boardService.getList());
+    public String list(Criteria cri, Model model) {
+        log.info("/board/list" + cri);
+        model.addAttribute("list", boardService.getList(cri));
+        model.addAttribute("pageMaker", new PageDTO(cri, boardService.getTotal(cri)));
         return "board/list";
     }
 

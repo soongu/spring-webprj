@@ -2,6 +2,7 @@ package com.myapp.webprj.board.service;
 
 import com.myapp.webprj.board.domain.Board;
 import com.myapp.webprj.board.mapper.BoardMapper;
+import com.myapp.webprj.paging.Criteria;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import lombok.extern.log4j.Log4j2;
@@ -40,8 +41,13 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<Board> getList() {
-        return boardMapper.getList();
+    public List<Board> getList(Criteria cri) {
+        return boardMapper.getListWithPaging(cri);
+    }
+
+    @Override
+    public int getTotal(Criteria cri) {
+        return boardMapper.getTotalCount(cri);
     }
 
 }

@@ -16,6 +16,26 @@
         ORDER BY bno DESC
     </select>
 
+    <select id="getListWithPaging" resultMap="boardMap">
+        <![CDATA[
+          select
+            bno, title, content, writer, regdate, updatedate
+          from
+              (
+              select /*+INDEX_DESC(tbl_board pk_board) */
+                rownum rn, bno, title, content, writer, regdate, updatedate
+              from
+                tbl_board
+              where rownum <= #{pageNum} * #{amount}
+              )
+          where rn > (#{pageNum} -1) * #{amount}
+        ]]>
+    </select>
+
+    <select id="getTotalCount" resultType="int">
+        SELECT COUNT(*) FROM tbl_board WHERE bno > 0
+    </select>
+
     <insert id="save">
         INSERT INTO
             tbl_board (bno, title, content, writer)
